@@ -1,1 +1,1 @@
-# UDDIPTA
+# scam link
