@@ -1,1 +1,164 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yes or No</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="firstCard" class="card">
+    <div class="dp-frame">
+      <img src="f:\GITHUB\OIP.webp" alt="Profile photo" />
+    </div>
+
+    <h1>Wanna go on a date with me?</h1>
+
+    <div class="buttons">
+      <button id="yesBtn" type="button">Yes</button>
+      <button id="noBtn" type="button">No</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <div id="thankYouCard" class="thank-you-card hidden">
+    <div class="dp-frame large">
+      <img src="f:\GITHUB\s7dnvijzo4baykojg8d05abwyz80.png" alt="Thank you profile" />
+    </div>
+
+    <p class="thank-text">Wait... you actually said yes 😭</p>
+    <p class="thank-text small">I was so ready for you to say no 😭</p>
+
+    <button id="okayBtn" type="button">okay okay</button>
+  </div>
+
+  <div id="dateCard" class="date-card hidden">
+    <div class="emoji">📅</div>
+
+    <p class="date-text">So.. when are you free?</p>
+
+    <input type="date" id="dateInput" class="date-input" />
+
+    <button id="setDateBtn" type="button">set the date 💕</button>
+  </div>
+
+  <div class="food-card hidden" id="foodCard">
+    <h2 class="food-title">What are we feeling? 🍽️</h2>
+    <p class="food-subtitle">Pick your vibe</p>
+
+    <div class="food-scroll" aria-label="Food menu">
+      <button class="food-item" data-food="pizza">
+        <span class="food-emoji">🍕</span>
+        <span class="food-name">Pizza</span>
+      </button>
+
+      <button class="food-item" data-food="sushi">
+        <span class="food-emoji">🍣</span>
+        <span class="food-name">Sushi</span>
+      </button>
+
+      <button class="food-item" data-food="burger">
+        <span class="food-emoji">🍔</span>
+        <span class="food-name">Burger</span>
+      </button>
+
+      <button class="food-item" data-food="pasta">
+        <span class="food-emoji">🍝</span>
+        <span class="food-name">Pasta</span>
+      </button>
+
+      <button class="food-item" data-food="tacos">
+        <span class="food-emoji">🌮</span>
+        <span class="food-name">Tacos</span>
+      </button>
+
+      <button class="food-item" data-food="ramen">
+        <span class="food-emoji">🍜</span>
+        <span class="food-name">Ramen</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="celebrationCard" class="celebration-card hidden">
+    <p class="celebration-text">gladdddd you din't say no 😭</p>
+    <p class="celebration-text bold">i am coming to get you 🚗</p>
+
+    <div id="giftBox" class="gift-box" aria-label="Gift box" title="Click to open">
+      <div class="gift-lid"></div>
+      <div class="gift-body"></div>
+      <div class="gift-ribbon gift-ribbon-left"></div>
+      <div class="gift-ribbon gift-ribbon-right"></div>
+      <div class="gift-bow"></div>
+
+      <div class="gift-contents">
+        <span>💖</span>
+        <span>🎁</span>
+        <span>🧸</span>
+        <span>💓</span>  
+        <span>🥰</span>
+        <span>🥹</span>
+        <span>✨</span>
+        <span>🌟</span>
+
+      </div>
+    </div>
+
+    <div id="blastLayer" class="blast-layer" aria-hidden="true"></div>
+
+    <button id="acceptBtn" type="button" class="accept-btn">okay i accept</button>
+  </div>
+
+  <div id="paymentCard" class="payment-card hidden">
+    <div class="payment-emoji">💳</div>
+
+    <p class="payment-title">one small fee</p>
+
+    <p class="payment-note">
+      to confirm your acceptance of this date, please complete the following transaction.
+      totally normal. everyone does this.
+    </p>
+
+    <div class="agreement-box">
+      <div class="agreement-header">Date Agreement™</div>
+
+      <div class="agreement-row">
+        <span class="agreement-text">
+          one-time fee • non-refundable • absolutely worth it
+        </span>
+        <span class="agreement-price">$200</span>
+      </div>
+    </div>
+
+    <button id="payBtn" class="pay-btn" type="button">
+      pay $200 & confirm <span>💖</span>
+    </button>
+
+    <button id="goBackBtn" class="go-back-btn" type="button">
+      go back
+    </button>
+  </div>
+
+  <div id="qrCard" class="qr-card hidden">
+    <div class="qr-stage">
+      <div class="qr-frame" id="qrFrame">
+        <div class="qr-glow"></div>
+        <div class="qr-inner">
+          <img
+            src="f:\GITHUB\QR.jpeg"
+            alt="QR code"
+            class="qr-image"
+          />
+        </div>
+      </div>
+    </div>
+
+    <p class="qr-title">scan me to complete your date confirmation</p>
+
+    <button id="doneBtn" class="done-btn" type="button">done</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
