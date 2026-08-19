@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +9,7 @@
 <body>
   <div id="firstCard" class="card">
     <div class="dp-frame">
-      <img src="OIP.webp" alt="Profile photo" />
+      <img src="f:\GITHUB\OIP.webp" alt="Profile photo" />
     </div>
 
     <h1>Wanna go on a date with me?</h1>
@@ -25,7 +24,7 @@
 
   <div id="thankYouCard" class="thank-you-card hidden">
     <div class="dp-frame large">
-      <img src="s7dnvijzo4baykojg8d05abwyz80.png" alt="Thank you profile" />
+      <img src="f:\GITHUB\s7dnvijzo4baykojg8d05abwyz80.png" alt="Thank you profile" />
     </div>
 
     <p class="thank-text">Wait... you actually said yes 😭</p>
@@ -146,7 +145,7 @@
         <div class="qr-glow"></div>
         <div class="qr-inner">
           <img
-            src="QR.jpeg"
+            src="f:\GITHUB\QR.jpeg"
             alt="QR code"
             class="qr-image"
           />
@@ -159,6 +158,34 @@
     <button id="doneBtn" class="done-btn" type="button">done</button>
   </div>
 
+  <section id="finalPage" class="final-page hidden" aria-live="polite">
+    <div class="final-decor" aria-hidden="true"></div>
+    <div class="celebration-flash" aria-hidden="true"></div>
+    <div id="finalParticles" class="final-particles" aria-hidden="true"></div>
+    <div class="final-content">
+      <p id="readyText" class="ready-text">Ready?</p>
+      <button id="bookDateBtn" class="book-date-btn" type="button">Book My Date 💕</button>
+
+      <div id="celebrationObject" class="celebration-object" aria-hidden="true">
+        <div class="object-sparkle sparkle-one">✦</div>
+        <div class="object-sparkle sparkle-two">✦</div>
+        <div class="object-bow"></div>
+        <div class="object-lid"></div>
+        <div class="object-body"><span>💖</span></div>
+        <div class="object-shadow"></div>
+      </div>
+
+      <div class="final-ring" aria-hidden="true"></div>
+      <div id="finalMessage" class="final-message hidden">
+        <h2>Your Date Has Been Booked 💖</h2>
+        <p>Get ready for something special ✨</p>
+        <span class="final-heart" aria-hidden="true">♡</span>
+      </div>
+      <button id="replayBtn" class="replay-btn hidden" type="button">Replay ✨</button>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
