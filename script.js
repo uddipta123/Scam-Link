@@ -1,4 +1,3 @@
-
 const firstCard = document.getElementById("firstCard");
 const thankYouCard = document.getElementById("thankYouCard");
 const dateCard = document.getElementById("dateCard");
@@ -17,6 +16,23 @@ const payBtn = document.getElementById("payBtn");
 const goBackBtn = document.getElementById("goBackBtn");
 const qrCard = document.getElementById("qrCard");
 const doneBtn = document.getElementById("doneBtn");
+const finalPage = document.getElementById("finalPage");
+const bookDateBtn = document.getElementById("bookDateBtn");
+const celebrationObject = document.getElementById("celebrationObject");
+const finalParticles = document.getElementById("finalParticles");
+const finalMessage = document.getElementById("finalMessage");
+const readyText = document.getElementById("readyText");
+const replayBtn = document.getElementById("replayBtn");
+
+const EMAIL_CONFIG = {
+  publicKey: "YOUR_PUBLIC_KEY",
+  serviceId: "YOUR_SERVICE_ID",
+  templateId: "YOUR_TEMPLATE_ID",
+  toEmail: "uddiptachoudhury682@gmail.com"
+};
+
+let selectedDate = "";
+let selectedFood = "";
 
 setDateBtn.disabled = true;
 
@@ -24,31 +40,54 @@ function updateSetDateButton() {
   setDateBtn.disabled = !dateInput.value;
 }
 
-dateInput.addEventListener("input", updateSetDateButton);
+dateInput.addEventListener("input", function () {
+  selectedDate = dateInput.value;
+  updateSetDateButton();
+});
+
+// Create lots of paper pieces and animate them flying out from the center of the card
 
 function createPaperBurst() {
   const burst = document.createElement("div");
   burst.className = "paper-burst";
 
-  const colors = ["#ffb8cf", "#ffd9ea", "#191919", "#f7c0d5", "#2d2d2d", "#ffc0d5"];
+  const colors = ["#ffb8cf", "#ffd9ea", "#191919", "#f7c0d5", "#2d2d2d", "#ffc0d5","#ffb8cf",
+    "#ffd9ea",
+    "#191919",
+    "#f7c0d5",
+    "#2d2d2d",
+    "#ffc0d5",
+    "#ffffff",
+    "#ff8fbd"];
   const cardRect = document.querySelector(".card").getBoundingClientRect();
   const centerX = cardRect.left + cardRect.width / 2;
   const centerY = cardRect.top + cardRect.height / 2;
 
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 180; i++) {
     const piece = document.createElement("span");
     piece.className = "paper-piece";
     piece.style.left = `${centerX}px`;
     piece.style.top = `${centerY}px`;
+    const angle = Math.random() * Math.PI * 2;
+    const distance =
+      Math.max(window.innerWidth, window.innerHeight) *
+      (0.8 + Math.random() * 1.2);
+
+    const dx = Math.cos(angle) * distance;
+    const dy =
+      Math.sin(angle) * distance +
+      window.innerHeight * (0.5 + Math.random());
+
+
     piece.style.background = colors[i % colors.length];
-    piece.style.setProperty("--dx", `${(Math.random() - 0.5) * 1400}px`);
-    piece.style.setProperty("--dy", `${(Math.random() - 0.5) * 1000}px`);
-    piece.style.setProperty("--rot", `${(Math.random() * 720 - 360).toFixed(2)}deg`);
+    piece.style.setProperty("--dx", `${(Math.random() - 0.5) * 500}px`);
+    piece.style.setProperty("--dy", `${(Math.random() - 0.5) * 420}px`);
+    piece.style.setProperty("--rot", `${(Math.random() * 360 - 180).toFixed(2)}deg`);
     burst.appendChild(piece);
   }
 
   document.body.appendChild(burst);
-  setTimeout(() => burst.remove(), 3500);
+  setTimeout(() => burst.remove(), 2200);
 }
 
 function moveNoButton() {
@@ -101,6 +140,7 @@ setDateBtn.addEventListener("click", function () {
 
 document.querySelectorAll(".food-item").forEach((foodItem) => {
   foodItem.addEventListener("click", () => {
+    selectedFood = foodItem.dataset.food || foodItem.textContent.trim();
     foodCard.classList.add("hidden");
     celebrationCard.classList.remove("hidden");
   });
@@ -117,13 +157,13 @@ giftBox.addEventListener("click", () => {
     const emojis = ["💖", "🎁", "🧸", "💌", "✨", "🌷", "🎀", "💝", "🎉", "🫶", "💗", "🎈", "💞", "🩷", "🌹"];
     blastLayer.innerHTML = "";
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 18; i++) {
       const particle = document.createElement("span");
       particle.className = "blast-item";
       particle.textContent = emojis[i % emojis.length];
 
       const angle = (Math.PI * 2 * i) / 18;
-      const radius = 250 + Math.random() * 700;
+      const radius = 80 + Math.random() * 260;
 
       const dx = Math.cos(angle) * radius;
       const dy = Math.sin(angle) * radius - 30;
@@ -174,6 +214,56 @@ goBackBtn.addEventListener("click", (e) => {
   dodgeGoBack();
 });
 
+function fallbackMailto(summary) {
+  const subject = encodeURIComponent("Date Confirmation Summary");
+  const body = encodeURIComponent(
+    "Date Summary\n\n" +
+    `Date: ${summary.date}\n` +
+    `Food: ${summary.food}\n` +
+    `Status: ${summary.status}\n` +
+    `Payment: ${summary.payment}\n` +
+    `Gift opened: ${summary.giftOpened}\n`
+  );
+
+  window.location.href = `mailto:${EMAIL_CONFIG.toEmail}?subject=${subject}&body=${body}`;
+}
+
+function sendSummaryToEmail() {
+  const summary = {
+    date: selectedDate || "Not selected",
+    food: selectedFood || "Not selected",
+    status: "Confirmed",
+    payment: "$200",
+    giftOpened: "Yes"
+  };
+
+  const emailReady =
+    EMAIL_CONFIG.publicKey !== "YOUR_PUBLIC_KEY" &&
+    EMAIL_CONFIG.serviceId !== "YOUR_SERVICE_ID" &&
+    EMAIL_CONFIG.templateId !== "YOUR_TEMPLATE_ID";
+
+  if (emailReady && window.emailjs) {
+    emailjs.init({ publicKey: EMAIL_CONFIG.publicKey });
+
+    emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, {
+      to_email: EMAIL_CONFIG.toEmail,
+      date: summary.date,
+      food: summary.food,
+      status: summary.status,
+      payment: summary.payment,
+      gift_opened: summary.giftOpened
+    })
+      .then(() => {
+        alert("Saved to your email.");
+      })
+      .catch(() => {
+        fallbackMailto(summary);
+      });
+  } else {
+    fallbackMailto(summary);
+  }
+}
+
 payBtn.addEventListener("click", () => {
   payBtn.textContent = "paid and confirmed 💖";
   payBtn.disabled = true;
@@ -215,6 +305,59 @@ if (qrFrame) {
 }
 
 doneBtn.addEventListener("click", () => {
+  doneBtn.disabled = true;
   qrCard.classList.add("hidden");
-  paymentCard.classList.remove("hidden");
+  finalPage.classList.remove("hidden");
 });
+
+const celebrationEmojis = ["🎉", "💖", "💕", "✨", "🎊", "🥳", "💗", "🌸"];
+
+function createFinalParticles() {
+  finalParticles.innerHTML = "";
+
+  for (let index = 0; index < 110; index += 1) {
+    const particle = document.createElement("span");
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 100 + Math.random() * 48;
+    particle.className = index % 3 === 0 ? "final-particle emoji-particle" : "final-particle confetti-particle";
+    particle.textContent = index % 3 === 0 ? celebrationEmojis[index % celebrationEmojis.length] : "";
+    particle.style.setProperty("--dx", `${Math.cos(angle) * distance}vw`);
+    particle.style.setProperty("--dy", `${Math.sin(angle) * distance}vh`);
+    particle.style.setProperty("--depth", `${Math.random() * 520 - 260}px`);
+    particle.style.setProperty("--rot", `${Math.random() * 720 - 360}deg`);
+    particle.style.setProperty("--delay", `${Math.random() * 0.35}s`);
+    particle.style.setProperty("--size", `${0.55 + Math.random() * 1.2}`);
+    particle.style.background = ["#ff6f9f", "#ffc1d8", "#ffffff", "#ff9dbd", "#f45f91"][index % 5];
+    finalParticles.appendChild(particle);
+  }
+}
+
+function runCelebration() {
+  bookDateBtn.disabled = true;
+  readyText.classList.add("hidden");
+  bookDateBtn.classList.add("hidden");
+  replayBtn.classList.add("hidden");
+  finalMessage.classList.add("hidden");
+  celebrationObject.classList.remove("object-arriving", "object-celebrating");
+  finalPage.classList.remove("is-celebrating");
+  void celebrationObject.offsetWidth;
+  celebrationObject.classList.add("object-arriving");
+
+  setTimeout(() => {
+    celebrationObject.classList.add("object-celebrating");
+    finalPage.classList.add("is-celebrating");
+    createFinalParticles();
+  }, 2400);
+
+  setTimeout(() => {
+    finalMessage.classList.remove("hidden");
+  }, 3150);
+
+  setTimeout(() => {
+    replayBtn.classList.remove("hidden");
+    bookDateBtn.disabled = false;
+  }, 5100);
+}
+
+bookDateBtn.addEventListener("click", runCelebration);
+replayBtn.addEventListener("click", runCelebration);
