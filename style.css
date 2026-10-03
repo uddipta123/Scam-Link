@@ -14,6 +14,56 @@ body {
   overflow: hidden;
 }
 
+.saved-info-card {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 30;
+  width: min(190px, 34vw);
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(216, 103, 148, 0.18);
+  box-shadow: 0 12px 24px rgba(216, 103, 148, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.saved-info-card h3 {
+  margin: 0 0 8px;
+  color: #d75d8f;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.saved-info-card ul {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.saved-info-card li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: #d75d8f;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.saved-info-card li span {
+  opacity: 0.8;
+}
+
+.saved-info-card li strong {
+  color: #c95785;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-align: right;
+}
+
 .card,
 .thank-you-card {
   position: relative;
