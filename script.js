@@ -11,11 +11,6 @@ const dateInput = document.getElementById("dateInput");
 const giftBox = document.getElementById("giftBox");
 const acceptBtn = document.getElementById("acceptBtn");
 const blastLayer = document.getElementById("blastLayer");
-const paymentCard = document.getElementById("paymentCard");
-const payBtn = document.getElementById("payBtn");
-const goBackBtn = document.getElementById("goBackBtn");
-const qrCard = document.getElementById("qrCard");
-const doneBtn = document.getElementById("doneBtn");
 const finalPage = document.getElementById("finalPage");
 const bookDateBtn = document.getElementById("bookDateBtn");
 const celebrationObject = document.getElementById("celebrationObject");
@@ -23,6 +18,10 @@ const finalParticles = document.getElementById("finalParticles");
 const finalMessage = document.getElementById("finalMessage");
 const readyText = document.getElementById("readyText");
 const replayBtn = document.getElementById("replayBtn");
+const savedInfoCard = document.getElementById("savedInfoCard");
+const savedDateValue = document.getElementById("savedDateValue");
+const savedFoodValue = document.getElementById("savedFoodValue");
+const savedGiftValue = document.getElementById("savedGiftValue");
 
 const EMAIL_CONFIG = {
   publicKey: "YOUR_PUBLIC_KEY",
@@ -33,6 +32,16 @@ const EMAIL_CONFIG = {
 
 let selectedDate = "";
 let selectedFood = "";
+let giftOpened = false;
+let paymentConfirmed = false;
+
+function updateSavedInfoCard() {
+  if (!savedInfoCard) return;
+
+  savedDateValue.textContent = selectedDate || "Not set";
+  savedFoodValue.textContent = selectedFood || "Not set";
+  savedGiftValue.textContent = giftOpened ? "Opened" : "Not opened";
+}
 
 setDateBtn.disabled = true;
 
@@ -42,6 +51,7 @@ function updateSetDateButton() {
 
 dateInput.addEventListener("input", function () {
   selectedDate = dateInput.value;
+  updateSavedInfoCard();
   updateSetDateButton();
 });
 
@@ -141,6 +151,7 @@ setDateBtn.addEventListener("click", function () {
 document.querySelectorAll(".food-item").forEach((foodItem) => {
   foodItem.addEventListener("click", () => {
     selectedFood = foodItem.dataset.food || foodItem.textContent.trim();
+    updateSavedInfoCard();
     foodCard.classList.add("hidden");
     celebrationCard.classList.remove("hidden");
   });
@@ -150,6 +161,8 @@ giftBox.addEventListener("click", () => {
   if (giftBox.classList.contains("opened")) return;
 
   giftBox.classList.add("opened");
+  giftOpened = true;
+  updateSavedInfoCard();
 
   setTimeout(() => {
     celebrationCard.classList.add("exploded");
@@ -180,38 +193,7 @@ giftBox.addEventListener("click", () => {
 
 acceptBtn.addEventListener("click", () => {
   celebrationCard.classList.add("hidden");
-  paymentCard.classList.remove("hidden");
-});
-
-function dodgeGoBack() {
-  const cardRect = paymentCard.getBoundingClientRect();
-  const btnRect = goBackBtn.getBoundingClientRect();
-
-  const maxX = Math.max(10, cardRect.width - btnRect.width - 20);
-  const maxY = Math.max(10, cardRect.height - btnRect.height - 20);
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  goBackBtn.style.left = `${randomX - 80}px`;
-  goBackBtn.style.top = `${randomY - 24}px`;
-}
-
-goBackBtn.addEventListener("pointerenter", (e) => {
-  e.preventDefault();
-  dodgeGoBack();
-});
-
-goBackBtn.addEventListener("pointerdown", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  dodgeGoBack();
-});
-
-goBackBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  dodgeGoBack();
+  finalPage.classList.remove("hidden");
 });
 
 function fallbackMailto(summary) {
@@ -264,52 +246,6 @@ function sendSummaryToEmail() {
   }
 }
 
-payBtn.addEventListener("click", () => {
-  payBtn.textContent = "paid and confirmed 💖";
-  payBtn.disabled = true;
-  payBtn.style.opacity = "0.9";
-
-  paymentCard.classList.add("hidden");
-  qrCard.classList.remove("hidden");
-});
-
-const qrFrame = document.getElementById("qrFrame");
-
-if (qrFrame) {
-  qrFrame.addEventListener("pointermove", (event) => {
-    const rect = qrFrame.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-
-    const rotateY = (x - 0.5) * 18;
-    const rotateX = (0.5 - y) * 18;
-
-    qrFrame.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-    qrFrame.style.boxShadow = `
-      inset 0 1px 0 rgba(255,255,255,0.95),
-      inset 0 -12px 16px rgba(255, 170, 203, 0.2),
-      0 24px 30px rgba(216, 103, 148, 0.24),
-      0 0 20px rgba(255, 168, 202, 0.38)
-    `;
-  });
-
-  qrFrame.addEventListener("pointerleave", () => {
-    qrFrame.style.transform = "rotateX(16deg) rotateY(-14deg)";
-    qrFrame.style.boxShadow = `
-      inset 0 1px 0 rgba(255,255,255,0.9),
-      inset 0 -12px 16px rgba(255, 170, 203, 0.18),
-      0 20px 28px rgba(216, 103, 148, 0.16),
-      0 0 18px rgba(255, 168, 202, 0.2)
-    `;
-  });
-}
-
-doneBtn.addEventListener("click", () => {
-  doneBtn.disabled = true;
-  qrCard.classList.add("hidden");
-  finalPage.classList.remove("hidden");
-});
-
 const celebrationEmojis = ["🎉", "💖", "💕", "✨", "🎊", "🥳", "💗", "🌸"];
 
 function createFinalParticles() {
@@ -347,16 +283,16 @@ function runCelebration() {
     celebrationObject.classList.add("object-celebrating");
     finalPage.classList.add("is-celebrating");
     createFinalParticles();
-  }, 2400);
+  }, 900);
 
   setTimeout(() => {
     finalMessage.classList.remove("hidden");
-  }, 3150);
+  }, 1400);
 
   setTimeout(() => {
     replayBtn.classList.remove("hidden");
     bookDateBtn.disabled = false;
-  }, 5100);
+  }, 2400);
 }
 
 bookDateBtn.addEventListener("click", runCelebration);
